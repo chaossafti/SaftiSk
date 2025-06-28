@@ -1,0 +1,106 @@
+package de.safti.saftiSk.skript.elements.effects;
+
+import ch.njol.skript.ScriptLoader;
+import ch.njol.skript.Skript;
+import ch.njol.skript.lang.Effect;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.util.Kleenean;
+import de.safti.saftiSk.skript.SaftiLogHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.Event;
+import org.bukkit.permissions.ServerOperator;
+import org.jetbrains.annotations.Nullable;
+import org.skriptlang.skript.lang.script.Script;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class EffLoadExternalSkript extends Effect {
+    private static final Logger log = LoggerFactory.getLogger(EffLoadExternalSkript.class);
+    private Expression<String> scriptPath;
+    private boolean reload;
+    private boolean unload;
+
+    static {
+        Skript.registerEffect(EffLoadExternalSkript.class, "[1¦re]load external skript at %string%");
+    }
+
+    @Override
+    protected void execute(Event event) {
+        // ensure non-null path
+        String scriptPath = this.scriptPath.getSingle(event);
+        if(scriptPath == null) {
+            return;
+        }
+
+        // ensure file exists
+        File file = new File(scriptPath);
+        if(!file.exists()) {
+            log.warn("Tried loading external script {}, but no file was found.", scriptPath);
+            return;
+        }
+
+
+        // file is not a plain file or normal directory
+        Set<Script> scripts;
+        if(file.isDirectory()) {
+            scripts = ScriptLoader.getScripts(file);
+        } else if(file.isFile()) {
+            scripts = Set.of(Objects.requireNonNull(ScriptLoader.getScript(file)));
+        } else {
+            log.warn("Something that isn't a file or directory was passed into the load external script effect!");
+            return;
+        }
+
+        if(!scripts.isEmpty()) {
+            if(unload) {
+                ScriptLoader.unloadScripts(scripts);
+                return;
+
+            }
+
+            if(!reload) {
+                log.warn("Reloading was disabled and an already loaded skript was provided! Script: {}", scriptPath);
+                return;
+            }
+
+            ScriptLoader.unloadScripts(scripts);
+        }
+
+        // create a log handler
+        Collection<CommandSender> recipients = Bukkit.getOnlinePlayers()
+                .stream()
+                .filter(ServerOperator::isOp)
+                .collect(Collectors.toSet());
+
+        try(SaftiLogHandler logHandler = new SaftiLogHandler(recipients)) {
+            ScriptLoader.loadScripts(file, logHandler);
+            logHandler.printLog();
+        }
+
+    }
+
+
+
+
+    @Override
+    public String toString(@Nullable Event event, boolean debug) {
+        return "load external skript";
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        scriptPath = (Expression<String>) expressions[0];
+        reload = parseResult.mark == 1;
+        unload = matchedPattern == 1;
+        return true;
+    }
+}

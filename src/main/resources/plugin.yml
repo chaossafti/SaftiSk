@@ -1,0 +1,6 @@
+name: SaftiSk
+version: '1.0'
+main: de.safti.saftiSk.SaftiSk
+api-version: '1.21'
+depend:
+  - "Skript"
