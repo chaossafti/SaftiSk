@@ -1,7 +1,7 @@
 # an api token used to look up repositorys.
 # This is only needed if you are trying to read from a private repository
 # Leave it as "anonymous" if you do not have a token.
-# After changing the token, you must /saftisk reloadconfig
+# After changing the token, you must /saftisk reload
 # it is recommended to set this token, as it allows 10x more downloads per hour.
 github_api_token: "anonymous"
 
