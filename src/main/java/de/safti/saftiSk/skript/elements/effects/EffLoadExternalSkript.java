@@ -29,7 +29,7 @@ public class EffLoadExternalSkript extends Effect {
 	private boolean unload;
 	
 	static {
-		Skript.registerEffect(EffLoadExternalSkript.class, "[1¦re]load external skript at %string%");
+		Skript.registerEffect(EffLoadExternalSkript.class, "[1¦re]load external s(k|c)ript at %string%");
 	}
 	
 	@Override
