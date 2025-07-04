@@ -21,7 +21,7 @@ public class ExprDataContainerListVariable extends SimpleExpression<Object> {
 
 
     @Override
-    protected Object @Nullable [] get(Event event) {
+    protected Object[] get(Event event) {
         return new Object[0];
     }
 

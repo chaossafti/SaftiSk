@@ -193,9 +193,42 @@ public class DarkMagic {
             //noinspection unchecked
             return (R) method.invoke(null, args);
         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+            log.error("Exception while static invoking {}.{}", clazz.getName(), methodName);
             throw new DarkMagicError(e);
         }
-
+    }
+    
+    public static <R> R staticInvoke(Class<?> clazz, MethodInvocationInfo info) {
+        var types = info.types;
+        try {
+            Method method = clazz.getDeclaredMethod(info.methodName, types);
+            method.setAccessible(true);
+            //noinspection unchecked
+            return (R) method.invoke(null, info.args);
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+            log.error("Exception while static invoking {}.{}", clazz.getName(), info.methodName);
+            throw new DarkMagicError(e);
+        }
+    }
+    
+    public static class MethodInvocationInfo {
+        private String methodName;
+        private Class<?>[] types;
+        private Object[] args;
+        
+        public MethodInvocationInfo(String methodName) {
+            this.methodName = methodName;
+        }
+        
+        public MethodInvocationInfo types(Class<?>... types) {
+            this.types = types;
+            return this;
+        }
+        
+        public MethodInvocationInfo args(Object... args) {
+            this.args = args;
+            return this;
+        }
     }
 
     public static final class DarkMagicError extends RuntimeException {

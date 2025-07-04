@@ -38,7 +38,7 @@ public class ExprListFieldValues extends SimpleExpression<Object> {
     }
 
     @Override
-    protected Object @Nullable [] get(Event event) {
+    protected Object[] get(Event event) {
         // get expressions and null check
         String path = pathExpression.getSingle(event);
         ListFieldType listField = dataStructureExpression.getSingle(event);
@@ -57,7 +57,7 @@ public class ExprListFieldValues extends SimpleExpression<Object> {
     }
 
     @Override
-    public void change(Event event, Object @Nullable [] delta, Changer.ChangeMode mode) {
+    public void change(Event event, Object[] delta, Changer.ChangeMode mode) {
         // get expressions and null check
         String path = pathExpression.getSingle(event);
         ListFieldType listField = dataStructureExpression.getSingle(event);
@@ -200,7 +200,7 @@ public class ExprListFieldValues extends SimpleExpression<Object> {
     }
 
     @Override
-    public Class<?> @Nullable [] acceptChange(Changer.ChangeMode mode) {
+    public Class<?>[] acceptChange(Changer.ChangeMode mode) {
         return switch (mode) {
             case SET -> single ? new Class[] {Object.class} : new Class[] {Object[].class};
             case RESET, DELETE, REMOVE_ALL -> new Class[]{Object.class};

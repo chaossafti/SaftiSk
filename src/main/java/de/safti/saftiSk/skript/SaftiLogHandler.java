@@ -9,10 +9,13 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.permissions.ServerOperator;
 
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class SaftiLogHandler extends LogHandler {
     private final Collection<CommandSender> recipients;
@@ -20,8 +23,22 @@ public class SaftiLogHandler extends LogHandler {
     private int numErrors;
     private int numWarns;
     private final long startTime;
-
-    public SaftiLogHandler(Collection<CommandSender> recipients) {
+    
+    public static Collection<CommandSender> getDefaultRecipients() {
+        Collection<CommandSender> recipients = Bukkit.getOnlinePlayers()
+                .stream()
+                .filter(ServerOperator::isOp)
+                .collect(Collectors.toSet());
+        
+        recipients.add(Bukkit.getConsoleSender());
+        return recipients;
+    }
+	
+	public SaftiLogHandler() {
+		this(getDefaultRecipients());
+	}
+	
+	public SaftiLogHandler(Collection<CommandSender> recipients) {
         this.recipients = recipients;
         send("&7[&6SaftiSk&7] &fReloading external scripts...");
         startTime = System.currentTimeMillis();

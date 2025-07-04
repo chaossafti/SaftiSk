@@ -1,0 +1,17 @@
+# an api token used to look up repositorys.
+# This is only needed if you are trying to read from a private repository
+# Leave it as "anonymous" if you do not have a token.
+# After changing the token, you must /saftisk reloadconfig
+# it is recommended to set this token, as it allows 10x more downloads per hour.
+github_api_token: "anonymous"
+
+# example structure of loading an external dependency
+dependencies:
+  # The name of the github repository.
+  # The repository cannot be private.
+  # If it is private, a github API token must be set, that has the permission to read the repository.
+  chaossafti/saftiSkExample: # -> this line defines the repository name
+    # Each file listed here will be loaded.
+    # file paths are split by a /
+    files:
+      - "example.sk"

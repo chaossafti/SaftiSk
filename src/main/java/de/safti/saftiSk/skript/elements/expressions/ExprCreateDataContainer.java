@@ -54,7 +54,7 @@ public class ExprCreateDataContainer extends SimpleExpression<DataStructure> {
     }
 
     @Override
-    protected DataStructure @Nullable [] get(Event event) {
+    protected DataStructure[] get(Event event) {
         DataStructure struct = DataStructure.fromName(name);
         if(struct == null) {
             log.warn("Could not find data structure with name {} at runtime", name);
