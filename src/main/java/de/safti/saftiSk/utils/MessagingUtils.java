@@ -7,6 +7,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class MessagingUtils {
@@ -23,6 +24,12 @@ public class MessagingUtils {
 		}
 		
 		public MessageBuilder recipient(Audience... audiences) {
+			if(this.audience == null || this.audience == Audience.empty()) {
+				this.audience = Audience.audience(audiences);
+				return this;
+			}
+			
+			audiences = Arrays.stream(audiences).filter(Objects::nonNull).toArray(Audience[]::new);
 			Audience[] joined = Arrays.copyOf(audiences, audiences.length + 1);
 			this.audience = Audience.audience(joined);
 			return this;
@@ -53,10 +60,8 @@ public class MessagingUtils {
 			return LegacyComponentSerializer.legacyAmpersand().deserialize(text);
 		}
 		
-		
-		
 		public void send() {
-			audience.sendMessage(componentBuilder);
+			audience.sendMessage(componentBuilder.build());
 		}
 	}
 	

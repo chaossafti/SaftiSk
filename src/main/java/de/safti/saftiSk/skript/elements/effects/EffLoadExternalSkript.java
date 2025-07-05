@@ -6,21 +6,16 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import de.safti.saftiSk.skript.SaftiLogHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
+import de.safti.saftiSk.skript.logHandler.SaftiLogHandler;
 import org.bukkit.event.Event;
-import org.bukkit.permissions.ServerOperator;
 import org.jetbrains.annotations.Nullable;
 import org.skriptlang.skript.lang.script.Script;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class EffLoadExternalSkript extends Effect {
 	private static final Logger log = LoggerFactory.getLogger(EffLoadExternalSkript.class);

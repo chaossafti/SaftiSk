@@ -5,7 +5,7 @@ import ch.njol.skript.config.Config;
 import ch.njol.util.OpenCloseable;
 import de.safti.saftiSk.ConfigManager;
 import de.safti.saftiSk.SaftiSk;
-import de.safti.saftiSk.skript.SaftiLogHandler;
+import de.safti.saftiSk.skript.logHandler.SaftiLogHandler;
 import de.safti.saftiSk.utils.DarkMagic;
 import de.safti.saftiSk.utils.GithubAPIWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -342,8 +342,6 @@ public class DependencyManager {
 	public void reload() {
 		String token = github.getToken();
 		String newToken = configManager.getToken();
-		if(newToken.equals("anonymous")) newToken = null;
-		
 		if(Objects.equals(token, newToken)) return;
 		github.setToken(newToken);
 	}
