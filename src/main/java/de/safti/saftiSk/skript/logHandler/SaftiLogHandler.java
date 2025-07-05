@@ -1,5 +1,6 @@
 package de.safti.saftiSk.skript.logHandler;
 
+import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.log.LogEntry;
 import ch.njol.skript.log.LogHandler;
 import net.kyori.adventure.text.Component;
@@ -65,9 +66,11 @@ public class SaftiLogHandler extends LogHandler {
 
     }
 
-    public void printLog() {
+    public void printLog(ScriptLoader.ScriptInfo info) {
         long timeMillis = System.currentTimeMillis() - startTime;
-
+        
+        send("&cFailed to reload %d scripts &7(%d structures)".formatted(info.files, info.structures));
+        
         // log to the players
         for (Level level : logs.keySet()) {
             Collection<LogEntry> entries = logs.get(level);

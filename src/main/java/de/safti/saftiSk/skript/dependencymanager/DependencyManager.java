@@ -226,9 +226,7 @@ public class DependencyManager {
 			log.info("[&bDependencyManager&r] loading {} dependencies", configs.size());
 			CompletableFuture<ScriptLoader.ScriptInfo> future = loadScripts(configs, logHandler);
 			
-			future.thenAccept(scriptInfo -> {
-				logHandler.printLog();
-			});
+			future.thenAccept(logHandler::printLog);
 		}
 		
 	}
@@ -243,9 +241,7 @@ public class DependencyManager {
 			log.info("[&bDependencyManager&r] loading {} dependencies", configs.size());
 			CompletableFuture<ScriptLoader.ScriptInfo> future = loadScripts(configs, logHandler);
 			
-			future.thenAccept(scriptInfo -> {
-				logHandler.printLog();
-			});
+			future.thenAccept(logHandler::printLog);
 		}
 		
 	}

@@ -76,10 +76,7 @@ public class EffLoadExternalSkript extends Effect {
 		
 		try (SaftiLogHandler logHandler = new SaftiLogHandler()) {
 			ScriptLoader.loadScripts(file, logHandler)
-					.thenAccept(scriptInfo -> {
-						logHandler.printLog();
-						
-					});
+					.thenAccept(logHandler::printLog);
 		}
 		
 	}
