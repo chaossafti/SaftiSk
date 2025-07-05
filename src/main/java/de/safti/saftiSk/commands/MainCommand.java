@@ -7,19 +7,13 @@ import de.safti.saftiSk.commands.subcommands.UpdateDependencySubCommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class MainCommand implements CommandExecutor {
-	private final Map<String, AbstractSubCommand> subCommandMap = new HashMap<>();
-	
+public class MainCommand extends AbstractCommandBase {
 	public MainCommand() {
-		subCommandMap.put("info", new InfoSubCommand());
-		subCommandMap.put("update", new UpdateDependencySubCommand());
-		subCommandMap.put("reload", new ReloadSubCommand());
+		registerSubCommand(new InfoSubCommand(), "info");
+		registerSubCommand(new UpdateDependencySubCommand(), "update");
+		registerSubCommand(new ReloadSubCommand(), "reload");
 	}
 	
 	@Override
@@ -33,7 +27,7 @@ public class MainCommand implements CommandExecutor {
 		}
 		
 		String subCommandLabel = args[0];
-		AbstractSubCommand subCommand = subCommandMap.get(subCommandLabel);
+		AbstractSubCommand subCommand = getSubCommand(subCommandLabel);
 		if(subCommand == null) {
 			send(sender, "&cCannot find sub command: " + subCommandLabel);
 			return true;
