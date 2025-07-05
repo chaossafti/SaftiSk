@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -49,7 +50,9 @@ public class EffLoadExternalSkript extends Effect {
 			scripts = ScriptLoader.getScripts(file);
 		}
 		else if(file.isFile()) {
-			scripts = Set.of(Objects.requireNonNull(ScriptLoader.getScript(file)));
+			scripts = new HashSet<>();
+			Script script = ScriptLoader.getScript(file);
+			if(script != null) scripts.add(script);
 		}
 		else {
 			log.warn("Something that isn't a file or directory was passed into the load external script effect!");
