@@ -1,11 +1,12 @@
 package de.safti.saftiSk.commands.subcommands;
 
 import de.safti.saftiSk.SaftiSk;
-import de.safti.saftiSk.commands.AbstractSubCommand;
+import de.safti.saftiSk.commands.api.AbstractSubCommand;
 import de.safti.saftiSk.skript.dependencymanager.DownloadedDependency;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -26,4 +27,5 @@ public class ReloadSubCommand extends AbstractSubCommand {
 		}, Bukkit.getScheduler().getMainThreadExecutor(SaftiSk.INSTANCE));
 		
 	}
+	
 }

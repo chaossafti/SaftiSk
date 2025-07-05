@@ -1,4 +1,4 @@
-package de.safti.saftiSk.commands;
+package de.safti.saftiSk.commands.api;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;

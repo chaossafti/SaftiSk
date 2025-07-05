@@ -3,7 +3,8 @@ package de.safti.saftiSk.commands.subcommands;
 import ch.njol.skript.ScriptLoader;
 import de.safti.saftiSk.ConfigManager;
 import de.safti.saftiSk.SaftiSk;
-import de.safti.saftiSk.commands.AbstractSubCommand;
+import de.safti.saftiSk.commands.api.AbstractSubCommand;
+import de.safti.saftiSk.commands.api.CommandTabCompleter;
 import de.safti.saftiSk.skript.dependencymanager.DependencyManager;
 import de.safti.saftiSk.skript.dependencymanager.DownloadedDependency;
 import org.bukkit.Bukkit;
@@ -12,11 +13,14 @@ import org.skriptlang.skript.lang.script.Script;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class UpdateDependencySubCommand extends AbstractSubCommand {
+public class UpdateDependencySubCommand extends AbstractSubCommand implements CommandTabCompleter {
 	
 	@Override
 	public void execute(CommandSender sender, String[] args) {
@@ -26,7 +30,10 @@ public class UpdateDependencySubCommand extends AbstractSubCommand {
 		}
 		
 		String repo =  args[0];
+		System.out.println("repo = " + repo);
 		String path = args[1];
+		System.out.println("path = " + path);
+		
 		ConfigManager configManager = SaftiSk.configManager;
 		DependencyManager dependencyManager = SaftiSk.dependencyManager;
 		File proxyFile = dependencyManager.getProxyFile(repo, path, false);
@@ -79,8 +86,22 @@ public class UpdateDependencySubCommand extends AbstractSubCommand {
 		
 	}
 	
-	private void load(DownloadedDependency dependency) {
-	
+	@Override
+	public List<String> get(CommandSender sender, String[] args) {
+		// it starts at 1???
+		if(args.length == 1) {
+			List<String> result = new ArrayList<>(SaftiSk.configManager.getDependencies().keySet().stream().toList());
+			result.add("all");
+			return result;
+		}
+		if(args.length == 2) {
+			List<String> result = new ArrayList<>();
+			SaftiSk.configManager.getDependencies().values()
+					.forEach(strings -> result.addAll(strings.stream().toList()));
+			
+			return result;
+		}
+		
+		return List.of();
 	}
-	
 }
