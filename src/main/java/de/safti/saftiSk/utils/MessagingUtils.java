@@ -3,6 +3,7 @@ package de.safti.saftiSk.utils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public class MessagingUtils {
 		}
 		
 		public MessageBuilder appendInline(String text) {
-			componentBuilder = componentBuilder.append(LegacyComponentSerializer.legacyAmpersand().deserialize(text));
+			componentBuilder = componentBuilder.append(fromText(text));
 			return this;
 		}
 		
@@ -36,6 +37,23 @@ public class MessagingUtils {
 			componentBuilder = componentBuilder.append(generator.apply(Component.text()));
 			return this;
 		}
+		
+		public MessageBuilder append(String content, Function<TextComponent.Builder, TextComponent> generator) {
+			TextComponent.Builder builder = fromText(content).toBuilder();
+			componentBuilder = componentBuilder.append(generator.apply(builder));
+			return this;
+		}
+		
+		public MessageBuilder hoverEvent(String text) {
+			componentBuilder.hoverEvent(HoverEvent.showText(fromText(text)));
+			return this;
+		}
+		
+		private TextComponent fromText(String text) {
+			return LegacyComponentSerializer.legacyAmpersand().deserialize(text);
+		}
+		
+		
 		
 		public void send() {
 			audience.sendMessage(componentBuilder);
