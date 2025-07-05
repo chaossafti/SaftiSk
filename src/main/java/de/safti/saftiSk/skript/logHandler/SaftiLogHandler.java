@@ -1,4 +1,4 @@
-package de.safti.saftiSk.skript;
+package de.safti.saftiSk.skript.logHandler;
 
 import ch.njol.skript.log.LogEntry;
 import ch.njol.skript.log.LogHandler;
