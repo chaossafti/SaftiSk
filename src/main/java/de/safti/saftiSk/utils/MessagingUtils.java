@@ -1,0 +1,48 @@
+package de.safti.saftiSk.utils;
+
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+
+import java.util.Arrays;
+import java.util.function.Function;
+
+public class MessagingUtils {
+	
+	
+	public static class MessageBuilder {
+		private TextComponent.Builder componentBuilder;
+		private Audience audience;
+		
+		
+		private MessageBuilder() {
+			this.componentBuilder = Component.text();
+			this.audience = Audience.audience();
+		}
+		
+		public MessageBuilder recipient(Audience... audiences) {
+			Audience[] joined = Arrays.copyOf(audiences, audiences.length + 1);
+			this.audience = Audience.audience(joined);
+			return this;
+		}
+		
+		public MessageBuilder appendInline(String text) {
+			componentBuilder = componentBuilder.append(LegacyComponentSerializer.legacyAmpersand().deserialize(text));
+			return this;
+		}
+		
+		public MessageBuilder append(Function<TextComponent.Builder, TextComponent> generator) {
+			componentBuilder = componentBuilder.append(generator.apply(Component.text()));
+			return this;
+		}
+		
+		public void send() {
+			audience.sendMessage(componentBuilder);
+		}
+	}
+	
+	public static MessageBuilder builder() {
+		return new MessageBuilder();
+	}
+}
