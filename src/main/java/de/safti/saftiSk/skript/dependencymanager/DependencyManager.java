@@ -223,7 +223,7 @@ public class DependencyManager {
 		}
 		
 		try (SaftiLogHandler logHandler = new SaftiLogHandler()) {
-			log.info("[&bDependencyManager&r] loading {} dependencies", configs.size());
+			log.info("loading {} dependencies", configs.size());
 			CompletableFuture<ScriptLoader.ScriptInfo> future = loadScripts(configs, logHandler);
 			
 			future.thenAccept(logHandler::printLog);
@@ -238,7 +238,7 @@ public class DependencyManager {
 		
 		List<Config> configs = filesToConfig(repoFile, fileSet);
 		try (SaftiLogHandler logHandler = new SaftiLogHandler()) {
-			log.info("[&bDependencyManager&r] loading {} dependencies", configs.size());
+			log.info("loading {} dependencies", configs.size());
 			CompletableFuture<ScriptLoader.ScriptInfo> future = loadScripts(configs, logHandler);
 			
 			future.thenAccept(logHandler::printLog);
@@ -270,7 +270,7 @@ public class DependencyManager {
 				writeProxyFile(downloadedDependency);
 			}
 			catch (IOException e) {
-				log.error("[&bDependencyManager&r] Failed to create proxy dependency skript file");
+				log.error("Failed to create proxy dependency skript file");
 				throw new RuntimeException(e);
 			}
 		}
@@ -330,7 +330,7 @@ public class DependencyManager {
 			f.createNewFile();
 		}
 		catch (IOException e) {
-			log.error("[&bDependencyManager&r] Failed trying to create proxy script file {}", f.getPath());
+			log.error("Failed trying to create proxy script file {}", f.getPath());
 			throw new RuntimeException(e);
 		}
 	}

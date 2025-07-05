@@ -69,7 +69,7 @@ public class SaftiLogHandler extends LogHandler {
     public void printLog(ScriptLoader.ScriptInfo info) {
         long timeMillis = System.currentTimeMillis() - startTime;
         
-        send("&cFailed to reload %d scripts &7(%d structures)".formatted(info.files, info.structures));
+        send("&cFailed to reload %d scripts &7(%d structures, took &6%dms&7)".formatted(info.files, info.structures, timeMillis));
         
         // log to the players
         for (Level level : logs.keySet()) {
@@ -91,10 +91,10 @@ public class SaftiLogHandler extends LogHandler {
             TextComponent component = builder.build();
             recipients.forEach(commandSender -> commandSender.sendMessage(component));
         }
-        printStats(timeMillis);
+        printStats();
     }
 
-    private void printStats(long timeMillis) {
+    private void printStats() {
         // send to player
         if(numWarns == 0 && numErrors == 0) {
             send("&aNice code! You don't have any errors or warnings.");
@@ -110,8 +110,6 @@ public class SaftiLogHandler extends LogHandler {
         if(numWarns > 0) {
             send("&e  Encountered " + numWarns + " warning(s) while reloading");
         }
-
-        send("&7  Took&6 " + timeMillis + "ms &7to reload");
     }
 
     private TextComponent toTextComponent(LogEntry entry, boolean isFirst) {
